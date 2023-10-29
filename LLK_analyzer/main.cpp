@@ -75,7 +75,11 @@ int main() {
     first_k['B'] = valuesForB;
     first_k['C'] = valuesForC;
     first_k['D'] = valuesForD;
-    vector<string> followD = inputGrammar->follow_k(2, 'D', first_k);
+    vector<string> followS = inputGrammar->follow_k(1, 'S', first_k);
+    vector<string> followA = inputGrammar->follow_k(1, 'A', first_k);
+    vector<string> followB = inputGrammar->follow_k(1, 'B', first_k);
+    vector<string> followC = inputGrammar->follow_k(1, 'C', first_k);
+    vector<string> followD = inputGrammar->follow_k(1, 'D', first_k);
 
     return 0;
 }

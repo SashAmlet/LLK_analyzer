@@ -116,7 +116,37 @@ char grammar::getEpsilon() {
 }
 
 // Follow k
-bool grammar::linearFilling(int k, string terminals, const vector<char> afterElms, vector<string>* Follow_k, const unordered_map<char, vector<string>> *first_ks) { // fill the sequence of terminals in the current rule without transposing the rules
+void grammar::RuleComposition(int k, vector<string>* Follow_k, const transition* curtrans, const unordered_map<char, vector<string>>* first_ks) {
+    for (transition tr : getTransitions()) {
+        vector<char> trRightPart = tr.getTo();
+        string terminals;
+        for (char el : trRightPart) {
+            if (el == curtrans->getFrom()) {
+                auto it = find(trRightPart.begin(), trRightPart.end(), el);
+                if (it != trRightPart.end()) {
+                    // Create a new vector and insert all the elements from 'el'.
+                    vector<char> afterElms(it + 1, trRightPart.end());
+                    bool res = linearFilling(k, "", afterElms, Follow_k, first_ks, &tr);
+                    if (res) { //From this rule, without any composition, we easily derived all possible combinations of k terminals
+                        break;
+                    }
+                    else {
+                        // 2.1
+                        if (tr.getFrom() == getAxiom()) {
+                            Follow_k->push_back("e");
+                        }
+                    }
+
+                }
+                else {
+                    // 2.2
+                }
+            }
+        }
+    }
+}
+
+bool grammar::linearFilling(int k, string terminals, const vector<char> afterElms, vector<string>* Follow_k, const unordered_map<char, vector<string>> *first_ks, const transition* curtrans) { // fill the sequence of terminals in the current rule without transposing the rules
     vector<char> allTerminals = getTerminals();
     char eps = getEpsilon();
 
@@ -131,9 +161,10 @@ bool grammar::linearFilling(int k, string terminals, const vector<char> afterElm
         if (afterElm == eps) {
             if (terminals.empty()) {
                 Follow_k->push_back("e");
+                RuleComposition(k, Follow_k, curtrans, first_ks);
             }
             else {
-                Follow_k->push_back(*terminals);
+                Follow_k->push_back(terminals);
             }
         }// if afterElm is terminal
         else if (find(allTerminals.begin(), allTerminals.end(), afterElm) != allTerminals.end()) {
@@ -146,10 +177,15 @@ bool grammar::linearFilling(int k, string terminals, const vector<char> afterElm
                     newAfter.push_back(e);
                 }
                 newAfter.insert(newAfter.end(), afterElms.begin() + 1, afterElms.end());
-                linearFilling(k, terminals, newAfter, Follow_k, first_ks);
+                linearFilling(k, terminals, newAfter, Follow_k, first_ks, curtrans);
             }
         }
     }
+    if (terminals.length() == k) {
+        Follow_k->push_back(terminals);
+        return true;
+    }
+    return false;
 }
 
 vector<string> grammar::follow_k(int k, char nonTerminalElement, const unordered_map<char, vector<string>> first_ks) {
@@ -166,12 +202,12 @@ vector<string> grammar::follow_k(int k, char nonTerminalElement, const unordered
                 if (it != trRightPart.end()) {
                     // Create a new vector and insert all the elements from 'el'.
                     vector<char> afterElms(it + 1, trRightPart.end());
-                    bool res = linearFilling(k , "", afterElms, &Follow_k, &first_ks);
-                    if (res) { // из этого правила, без транспонирований, спокойно вывели все возможные комбинации из k терминалов
+                    bool res = linearFilling(k , "", afterElms, &Follow_k, &first_ks, &tr);
+                    if (res) { //From this rule, without any composition, we easily derived all possible combinations of k terminals
                         break;
                     }
                     else {
-                        // 2.1
+                        RuleComposition(k, &Follow_k, &tr, &first_ks);
                     }
 
                 }
@@ -181,6 +217,17 @@ vector<string> grammar::follow_k(int k, char nonTerminalElement, const unordered
             }
         }
     }
+
+    if (nonTerminalElement == getAxiom()) {
+        Follow_k.push_back("e");
+    }
+
+    // Sort the vector so that duplicates are nearby
+    std::sort(Follow_k.begin(), Follow_k.end());
+
+    // Removing duplicates
+    Follow_k.erase(std::unique(Follow_k.begin(), Follow_k.end()), Follow_k.end());
+
 
     return Follow_k;
 }

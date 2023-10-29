@@ -45,7 +45,8 @@ private:
 
     vector<char> first(char nonTerminalElement, vector<char> processedNonTerminals);
     // Follow k
-    bool linearFilling(int k, string terminals, const vector<char> afterElms, vector<string>* Follow_k, const unordered_map<char, vector<string>>* first_ks);
+    bool linearFilling(int k, string terminals, const vector<char> afterElms, vector<string>* Follow_k, const unordered_map<char, vector<string>>* first_ks, const transition* curtrans);
+    void RuleComposition(int k, vector<string>* Follow_k, const transition* curtrans, const unordered_map<char, vector<string>>* first_ks);
 
     static bool isEpsilon(vector<char> word);
     static vector<char> getEpsilonVector();
