@@ -1,0 +1,11 @@
+a ( ) + *
+S A B C D
+S
+S -> BA
+A -> +BA
+A -> e(
+B -> DC
+C -> *DC
+C -> e
+D -> (S)
+D -> a
