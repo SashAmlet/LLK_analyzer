@@ -8,11 +8,12 @@
 #include <vector>
 #include "transition.h"
 #include <unordered_map>
+#include <string>
 using namespace std;
 
 class grammar {
 public:
-    grammar(char axiom, vector<char> terminals, vector<char> nonTerminals, vector<transition> transitions);
+    grammar(char axiom, vector<char> terminals, vector<char> nonTerminals, vector<transition> transitions, int k);
 
     ~grammar();
 
@@ -30,11 +31,10 @@ public:
     vector<transition> getTransitions();
 
     // TODO: Rewrite with First K
-    vector<char> first(char nonTerminalElement);
     // Follow k // using unordered_map<char, vector<string>> first_k
-    vector<string> follow_k(int k, char nonTerminalElement, const unordered_map<char, vector<string>> first_ks);
 
 private:
+    // vars
     int terminalAmount;
     int nonTerminalAmount;
     int transitionsAmount;
@@ -43,11 +43,23 @@ private:
     vector<char> terminals;
     vector<transition> transitions;
 
-    vector<char> first(char nonTerminalElement, vector<char> processedNonTerminals);
-    // Follow k
-    bool linearFilling(int k, string terminals, const vector<char> afterElms, vector<string>* Follow_k, const unordered_map<char, vector<string>>* first_ks, const transition* curtrans);
-    void RuleComposition(int k, vector<string>* Follow_k, const transition* curtrans, const unordered_map<char, vector<string>>* first_ks);
+    unordered_map<char, vector<vector<char>>> first_k;
+    unordered_map<char, vector<vector<char>>> follow_k;
 
+    // methods
+
+    // first
+    unordered_map<char, vector<vector<char>>> first(int k);
+    bool isTerm(vector<char> to);
+    vector<vector<char>> concatenation(int k, vector<vector<char>> a, vector<vector<char>> b);
+    vector<vector<char>> iteration(int k, vector<char> To, const unordered_map<char, vector<vector<char>>>& first_k);
+
+    // follow
+    vector<vector<char>> follow(int k, char nonTerminalElement);
+    bool linearFilling(int k, vector<char>& terminals, const vector<char> afterElms, vector<vector<char>>* Follow_k, const transition* curtrans);
+    void RuleComposition(int k, vector<char> terminals, vector<vector<char>>* Follow_k, const transition* curtrans, vector<transition>* usedtrans);
+
+    // else
     static bool isEpsilon(vector<char> word);
     static vector<char> getEpsilonVector();
     static char getEpsilon();

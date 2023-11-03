@@ -16,6 +16,8 @@ public:
 
     [[nodiscard]] char getFrom() const;
     [[nodiscard]] vector<char> getTo() const;
+    bool operator==(const transition& other) const;
+    bool operator!=(const transition& other) const;
 
 private:
     char from;

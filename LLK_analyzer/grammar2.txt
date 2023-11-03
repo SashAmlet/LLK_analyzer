@@ -1,0 +1,15 @@
+i + * n ( ) !
+E D R V L Z
+E
+E -> i+D
+E -> (E*R)
+E -> e
+D -> V*E
+D -> L!E
+R -> V!E
+R -> L*E
+V -> Z
+V -> n
+L -> Z
+L -> (E)
+Z -> e

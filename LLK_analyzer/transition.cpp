@@ -20,3 +20,13 @@ char transition::getFrom() const {
 vector<char> transition::getTo() const {
     return to;
 }
+
+bool transition::operator==(const transition& other) const
+{
+    return (other.from == from) && (other.to == to);
+}
+
+bool transition::operator!=(const transition& other) const
+{
+    return !(*this == other);;
+}

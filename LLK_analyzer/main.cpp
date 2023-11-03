@@ -10,7 +10,7 @@
 using namespace std;
 
 int main() {
-    ifstream inputFile("grammar.txt");
+    ifstream inputFile("grammar2.txt");
     if (!inputFile.is_open())
     {
         cout << "Error opening file." << endl;
@@ -60,26 +60,7 @@ int main() {
         }
     }
 
-    auto* inputGrammar = new grammar(Axiom, terminals, nonTerminals, transitions);
-    vector<char> firstS = inputGrammar->first('S');
-    vector<char> firstA = inputGrammar->first('A');
-
-    unordered_map<char, vector<string>> first_k;
-    vector<string> valuesForS = { "a", "a+", "a*", "(a", "((" };
-    vector<string> valuesForA = { "e", "+a", "+("};
-    vector<string> valuesForB = { "a", "a*", "(a", "((" };
-    vector<string> valuesForC = { "e", "*a", "*("};
-    vector<string> valuesForD = { "a", "(a", "((" };
-    first_k['S'] = valuesForS;
-    first_k['A'] = valuesForA;
-    first_k['B'] = valuesForB;
-    first_k['C'] = valuesForC;
-    first_k['D'] = valuesForD;
-    vector<string> followS = inputGrammar->follow_k(1, 'S', first_k);
-    vector<string> followA = inputGrammar->follow_k(1, 'A', first_k);
-    vector<string> followB = inputGrammar->follow_k(1, 'B', first_k);
-    vector<string> followC = inputGrammar->follow_k(1, 'C', first_k);
-    vector<string> followD = inputGrammar->follow_k(1, 'D', first_k);
-
+    auto* inputGrammar = new grammar(Axiom, terminals, nonTerminals, transitions, 1);
+   
     return 0;
 }
