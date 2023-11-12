@@ -59,8 +59,8 @@ void helper_class::printMainTable() {
         }*/
     for (auto XYU: mainTable) {
         cout << XYU.first << "   ";
-        for (auto xui : XYU.second) {
-            cout << xui << " ";
+        for (auto xyu : XYU.second) {
+            cout << xyu << " ";
         }
         cout << endl;
     }
