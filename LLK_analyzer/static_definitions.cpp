@@ -39,7 +39,7 @@ vector<char> static_definitions::removeFirstN(const vector<char>& word, int n) {
 }
 
 int static_definitions::getK() {
-    return 2;
+    return 1;
 }
 
 bool static_definitions::isEqualVectors(const vector<char>& vec1, const vector<char>& vec2) {

@@ -27,7 +27,6 @@ int main() {
     char Axiom;
 
     vector<transition> transitions;
-    vector<char> resultingSequence = vector<char>({ '(', 'a', '+', 'a',')','*', 'a' });
 
     while (getline(inputFile, line)) {
         rowCount++;
@@ -75,10 +74,9 @@ int main() {
     auto* inputGrammar = new grammar(Axiom, terminals, nonTerminals, transitions);
 
     // filling first_k and follow_k
-    int k = 1;
     unordered_map<char, vector<vector<char>>> firstK, followK;
-    cout << "First " << k << endl;
-    firstK = inputGrammar->first(k);
+    cout << "First " << static_definitions::getK() << endl;
+    firstK = inputGrammar->first(static_definitions::getK());
     inputGrammar->setFirst_k(firstK);
 
     for (char NT : inputGrammar->getNonTerminals()) {
@@ -92,9 +90,9 @@ int main() {
         }
         cout << endl;
     }
-    cout << "Follow " << k << endl;
+    cout << "Follow " << static_definitions::getK() << endl;
     for (char NT : inputGrammar->getNonTerminals()) {
-        followK[NT] = inputGrammar->follow(k, NT);
+        followK[NT] = inputGrammar->follow(static_definitions::getK(), NT);
 
         cout << NT << " : ";
         for (vector<char> Ts : followK[NT]) {
@@ -105,6 +103,7 @@ int main() {
         }
         cout << endl;
     }
+    inputGrammar->setFollow_k(followK);
     cout << "--------------------" << endl;
 
     auto* table = new helper_class(firstK, followK, *inputGrammar);
@@ -112,6 +111,10 @@ int main() {
 
     cout << "--------------------" << endl;
 
+    vector<char> resultingSequence = vector<char>({ '(', 'a', '+', 'a',')','*', 'a' }); // grammar 1
+    //vector<char> resultingSequence = vector<char>({ 'i','+','n','*','i','+','(',')','!', }); // grammar 2
+    //vector<char> resultingSequence = vector<char>({ '(','*','!','n','!','*',')', }); //grammar 2
+    //vector<char> resultingSequence = vector<char>({ '(','a','+','a',')', }); // grammar 3
     auto* analyzer = new sequence_analyzer(Axiom, resultingSequence, table->getMainTable(), *inputGrammar);
     vector<size_t> result = analyzer->analyzeSequence();
     for (auto elem : result)

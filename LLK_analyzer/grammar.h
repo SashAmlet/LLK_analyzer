@@ -33,6 +33,7 @@ public:
     void setFirst_k(unordered_map<char, vector<vector<char>>>);
     unordered_map<char, vector<vector<char>>> first(int k);
 
+    void setFollow_k(unordered_map<char, vector<vector<char>>>);
     vector<vector<char>> follow(int k, char nonTerminalElement);
 
 private:

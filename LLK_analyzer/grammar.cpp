@@ -279,6 +279,11 @@ bool grammar::linearFilling(int k, vector<char>& terminals, const vector<char> a
     return terminals.size() == k? true:false;
 }
 
+void grammar::setFollow_k(unordered_map<char, vector<vector<char>>> follow)
+{
+    this->follow_k = follow;
+}
+
 vector<vector<char>> grammar::follow(int k, char nonTerminalElement) {
     vector<vector<char>> Follow_k;
     vector<transition> trans; // select all the rules in which the non-terminal we need appears on the right side

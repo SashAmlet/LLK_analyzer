@@ -24,8 +24,10 @@ vector<size_t> sequence_analyzer::analyzeSequence() {
 
     while (!stack.empty() || !currentSubSequence.empty())
     {
-        if (!move(result))
-            return {};
+        if (!move(result)) {
+            result.push_back(0);
+            return result;
+        }
     }
 
     return result;
@@ -40,8 +42,29 @@ bool sequence_analyzer::move(vector<size_t>& res_vec) {
         currentSubSequence.push_back(sequenceToAnalyze[amountOfSymbolsAddedToSubSequence]);
         amountOfSymbolsAddedToSubSequence++;
     }
+    if (amountOfSymbolsAddedToSubSequence > 0) {
+        sequenceToAnalyze = static_definitions::removeFirstN(sequenceToAnalyze, amountOfSymbolsAddedToSubSequence);
+    }
+    bool flag = 0;
+    if (sequenceToAnalyze.empty() && currentSubSequence.empty()) {
+        flag = 1;
+        vector<size_t> epsilonRules = mainTable["e"];
+        for (auto rule : epsilonRules) {
+            auto it = find(stack.begin(), stack.end(), currentGrammar.getTransitions()[rule - 1].getFrom());
+            if (it != stack.end())
+            {
+                stack.erase(it);
+                res_vec.push_back(rule);
+            }
+        }
+    }
+    if (flag) {
+        if (stack.empty())
+            return true;
+        else
+            return false;
+    }
 
-    sequenceToAnalyze = static_definitions::removeFirstN(sequenceToAnalyze, amountOfSymbolsAddedToSubSequence);
 
     vector<char> allTerminals = currentGrammar.getTerminals();
     if (stack[0] == currentSubSequence[0])

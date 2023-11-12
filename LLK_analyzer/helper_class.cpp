@@ -50,13 +50,20 @@ unordered_map<string, vector<size_t>> helper_class::getMainTable() {
 }
 
 void helper_class::printMainTable() {
-    for (size_t i = 1; i <= internalGrammar.getTransitionsAmount(); ++i)
+    /*for (size_t i = 1; i <= internalGrammar.getTransitionsAmount(); ++i)
         for (const auto& elem : helperTable[i]) {
             cout << elem << " ";
             for (const auto& numToPrint : mainTable[elem])
                 cout << numToPrint << " ";
             cout << endl;
+        }*/
+    for (auto XYU: mainTable) {
+        cout << XYU.first << "   ";
+        for (auto xui : XYU.second) {
+            cout << xui << " ";
         }
+        cout << endl;
+    }
 }
 
 void helper_class::createTransitionRelation() {
