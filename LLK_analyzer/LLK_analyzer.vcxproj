@@ -140,11 +140,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="grammar.cpp" />
+    <ClCompile Include="helper_class.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="sequence_analyzer.cpp" />
+    <ClCompile Include="static_definitions.cpp" />
     <ClCompile Include="transition.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="grammar.h" />
+    <ClInclude Include="helper_class.h" />
+    <ClInclude Include="sequence_analyzer.h" />
+    <ClInclude Include="static_definitions.h" />
     <ClInclude Include="transition.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

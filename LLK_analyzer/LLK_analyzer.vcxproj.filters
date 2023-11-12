@@ -24,12 +24,30 @@
     <ClCompile Include="transition.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="sequence_analyzer.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="helper_class.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="static_definitions.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="grammar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="transition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="helper_class.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sequence_analyzer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="static_definitions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

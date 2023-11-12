@@ -11,7 +11,7 @@
 #include <iostream>
 
 
-grammar::grammar(char axiom, vector<char> terminals, vector<char> nonTerminals, vector<transition> transitions, int k) {
+grammar::grammar(char axiom, vector<char> terminals, vector<char> nonTerminals, vector<transition> transitions) {
     this->axiom = axiom;
     this->terminals = std::move(terminals);
     this->nonTerminals = std::move(nonTerminals);
@@ -21,7 +21,7 @@ grammar::grammar(char axiom, vector<char> terminals, vector<char> nonTerminals, 
     this->transitionsAmount = int(getTransitions().size());
 
     // filling first_k and follow_k
-
+    /*
     cout << "First " << k << endl;
     this->first_k = first(k);
 
@@ -48,7 +48,7 @@ grammar::grammar(char axiom, vector<char> terminals, vector<char> nonTerminals, 
             cout << ' ';
         }
         cout << endl;
-    }
+    }*/
 }
 
 #pragma region Helpers
@@ -151,6 +151,11 @@ vector<vector<char>> grammar::iteration(int k, vector<char> To, const unordered_
     }
 
     return result;
+}
+
+void grammar::setFirst_k(unordered_map<char, vector<vector<char>>> first)
+{
+    this->first_k = first;
 }
 
 unordered_map<char, vector<vector<char>>> grammar::first(int k) {
@@ -317,7 +322,12 @@ vector<vector<char>> grammar::follow(int k, char nonTerminalElement) {
 
     // Removing duplicates
     Follow_k.erase(std::unique(Follow_k.begin(), Follow_k.end()), Follow_k.end());
-
+    // Removing empty vectors
+    Follow_k.erase(std::remove_if(Follow_k.begin(), Follow_k.end(), [](const std::vector<char>& v) { return v.empty(); }), Follow_k.end());
+    /*for (auto& pair : Follow_k) {
+        auto& vectors = pair.second;
+        vectors.erase(std::remove_if(vectors.begin(), vectors.end(), [](const std::vector<char>& v) { return v.empty(); }), vectors.end());
+    }*/
 
     return Follow_k;
 }
